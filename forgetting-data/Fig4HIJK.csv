@@ -1,0 +1,78 @@
+Drug,Group,Test Freezing,Ki67+ cells ,DCX+ cells
+Vehicle,Shock,2.63,0.25,n
+Vehicle,Shock,1.66,0.26,0.44
+Vehicle,Shock,1.24,0.32,0.56
+Vehicle,Shock,13.02,0.23,n
+Vehicle,Shock,2.63,0.30,n
+Vehicle,Shock,10.52,0.11,n
+Vehicle,Shock,0.55,0.22,n
+Vehicle,Shock,0.00,0.31,n
+Vehicle,Shock,0.55,0.35,n
+Vehicle,Shock,3.61,0.24,0.89
+Vehicle,Shock,0.00,0.24,0.33
+Vehicle,Shock,9.58,0.17,n
+Vehicle,Shock,15.13,0.26,n
+Vehicle,Shock,3.05,0.35,n
+Vehicle,Shock,9.44,0.17,n
+Vehicle,Shock,1.85,0.22,n
+Vehicle,Shock,14.82,0.17,n
+Vehicle,Shock,0.00,0.26,n
+Vehicle,Shock,8.59,0.22,n
+Vehicle,Shock,23.67,0.22,n
+Vehicle,Shock,11.20,0.24,n
+Vehicle,Shock,0.69,0.34,n
+Vehicle,Shock,4.71,0.31,n
+Vehicle,Shock,6.78,0.29,0.38
+Vehicle,Shock,9.99,0.23,n
+Vehicle,Shock,0.00,0.14,n
+Vehicle,Shock,7.33,0.14,n
+Vehicle,Shock,6.22,0.25,n
+Vehicle,Shock,1.15,0.35,n
+Vehicle,Shock,17.51,0.26,n
+TMZ,Shock,7.06,0.18,0.24
+TMZ,Shock,23.99,0.16,0.17
+TMZ,Shock,0.55,0.17,0.24
+TMZ,Shock,20.79,0.16,0.27
+TMZ,Shock,34.32,0.15,0.20
+TMZ,Shock,1.43,0.20,0.38
+TMZ,Shock,20.23,0.23,n
+TMZ,Shock,0.55,0.13,n
+TMZ,Shock,6.25,0.12,n
+TMZ,Shock,54.05,0.14,n
+TMZ,Shock,2.18,0.14,n
+TMZ,Shock,10.55,0.17,n
+TMZ,Shock,0.56,0.16,n
+TMZ,Shock,9.13,0.26,n
+TMZ,Shock,23.69,0.18,n
+TMZ,Shock,43.06,0.22,n
+TMZ,Shock,0.00,0.22,n
+TMZ,Shock,1.94,0.27,n
+TMZ,Shock,3.60,0.26,n
+TMZ,Shock,0.00,0.18,n
+TMZ,Shock,21.59,0.21,n
+TMZ,Shock,22.73,0.25,n
+TMZ,Shock,11.62,0.25,n
+TMZ,Shock,0.00,0.18,n
+TMZ,Shock,1.90,0.23,n
+TMZ,Shock,1.38,0.22,n
+TMZ,Shock,26.32,0.25,n
+TMZ,Shock,4.57,0.23,n
+TMZ,Shock,43.02,0.15,n
+Vehicle,No Shock,11.20,n,n
+Vehicle,No Shock,15.63,n,n
+Vehicle,No Shock,1.11,n,n
+Vehicle,No Shock,20.06,n,n
+Vehicle,No Shock,0.69,n,n
+Vehicle,No Shock,0.69,n,n
+Vehicle,No Shock,0.00,n,n
+Vehicle,No Shock,4.70,n,n
+Vehicle,No Shock,2.49,n,n
+TMZ,No Shock,0.00,n,n
+TMZ,No Shock,1.80,n,n
+TMZ,No Shock,0.00,n,n
+TMZ,No Shock,3.04,n,n
+TMZ,No Shock,25.59,n,n
+TMZ,No Shock,0.00,n,n
+TMZ,No Shock,2.63,n,n
+TMZ,No Shock,7.88,n,n
+TMZ,No Shock,1.38,n,n

@@ -1,0 +1,81 @@
+Group,Day,Ki67+ cells ,DCX+ cells ,DCX+ LMTs 
+Running,0,0.18,0.27,0.92
+Running,0,0.16,0.25,0.97
+Running,0,0.17,0.19,1.53
+Running,0,0.16,0.33,2.55
+Running,0,0.16,n ,n 
+Running,0,0.14,n ,n 
+Running,0,0.12,n ,n 
+Running,0,0.16,n ,n 
+Running,3,0.14,0.40,1.48
+Running,3,0.13,0.50,2.19
+Running,3,0.23,0.310077519,2.96
+Running,3,0.29,0.46,2.70
+Running,3,0.19,n ,n 
+Running,3,0.24,n ,n 
+Running,3,0.16,n ,n 
+Running,3,0.31,n ,n 
+Running,7,0.28,0.51,2.70
+Running,7,0.39,0.60,2.86
+Running,7,0.19,0.56,2.38
+Running,7,0.28,0.31,2.76
+Running,7,0.25,n ,n 
+Running,7,0.34,n ,n 
+Running,7,0.37,n ,n 
+Running,7,0.34,n ,n 
+Running,14,0.27,0.53,3.72
+Running,14,0.27,0.55,2.24
+Running,14,0.25,0.62,3.06
+Running,14,0.25,0.57,2.50
+Running,14,0.14,n ,n 
+Running,14,0.24,n ,n 
+Running,14,0.25,n ,n 
+Running,14,0.27,n ,n 
+Running,28,0.25,0.58,1.99
+Running,28,0.16,0.29,4.59
+Running,28,0.25,0.51,4.13
+Running,28,0.18,0.31,2.52
+Running,28,0.24,0.39,n 
+Running,28,0.23,0.68,n 
+Running,28,0.28,0.48,n 
+Running,28,0.14,0.61,n 
+Sedentary,0,0.14,0.34,1.63
+Sedentary,0,0.17,0.22,1.94
+Sedentary,0,0.19,0.24,2.19
+Sedentary,0,0.18,0.27,2.04
+Sedentary,0,0.11,n ,n 
+Sedentary,0,0.19,n ,n 
+Sedentary,0,0.10,n ,n 
+Sedentary,0,0.18,n ,n 
+Sedentary,3,0.13,0.361215933,1.89
+Sedentary,3,0.18,0.295273585,1.53
+Sedentary,3,0.15,0.355230526,1.79
+Sedentary,3,0.17,0.335134694,2.50
+Sedentary,3,0.13,n ,n 
+Sedentary,3,0.19,n ,n 
+Sedentary,3,0.12,n ,n 
+Sedentary,3,0.19,n ,n 
+Sedentary,7,0.13,0.33,1.43
+Sedentary,7,0.20,0.277559048,1.79
+Sedentary,7,0.09,0.308910377,1.53
+Sedentary,7,0.16,0.209235455,1.99
+Sedentary,7,0.18,n ,n 
+Sedentary,7,0.09,n ,n 
+Sedentary,7,0.18,n ,n 
+Sedentary,7,0.14,n ,n 
+Sedentary,14,0.13,0.282374545,2.14
+Sedentary,14,0.10,0.306165714,1.63
+Sedentary,14,0.15,0.360075824,1.94
+Sedentary,14,0.14,0.213622917,2.04
+Sedentary,14,0.12,n ,n 
+Sedentary,14,0.16,n ,n 
+Sedentary,14,0.12,n ,n 
+Sedentary,14,0.15,n ,n 
+Sedentary,28,0.14,0.416666667,1.79
+Sedentary,28,0.18,0.257888889,1.68
+Sedentary,28,0.12,0.263338947,1.84
+Sedentary,28,0.11,0.181878788,1.63
+Sedentary,28,0.15,n ,n 
+Sedentary,28,0.12,n ,n 
+Sedentary,28,0.12,n ,n 
+Sedentary,28,0.15,n ,n 
