@@ -1,0 +1,169 @@
+---
+title: "thompson-ryan-ADA-data-reproduction"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r libraries, echo = FALSE}
+
+library(tidyverse)
+library(mosaic)
+library(ggsignif)
+library(gridExtra)
+library(afex)
+
+```
+
+```{r fig 1}
+
+###### Importing Fig1C
+
+Fig1C <- read.csv("forgetting-data/Fig1C.csv")
+names(Fig1C)
+
+#t test between 17 and 60 GFP+ cells !!!t value different
+t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)
+
+#tibble with mean and standard error Fig1C
+Fig1C_mean <- favstats(GFP..cells ~ Age, data = Fig1C) %>% 
+  mutate(se = sd/sqrt(n))
+
+#plot for above data
+p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_bar(stat= "identity", width = 0.5) +
+  labs(x = "", y= "GFP+ Cells") + #no x label 
+  coord_cartesian(ylim = c(0, 1.6)) +
+  scale_y_continuous(breaks = c(0, 0.8, 1.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
+  theme_classic() + #no grid and dark axis lines
+  theme(axis.text.x = element_blank(), #hides text and ticks
+        axis.ticks.x = element_blank(),
+        legend.title = element_blank()) +
+  geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
+              annotation = "*") +
+  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+
+
+###### Importing Fig1DEF
+
+Fig1DEF <- read.csv("forgetting-data/Fig1DEF_ and_FigS1.csv", stringsAsFactors = FALSE)
+Fig1DEF <- Fig1DEF %>% 
+  mutate(Age_f = factor(Age, levels = c("17", "28", "60", "120", "180"))) %>% 
+  mutate(id = rownames(Fig1DEF))
+
+#supplemental figure1 ANOVA
+one_fit <- aov_ez("id", "Ki67..cells", data = Fig1DEF, between = c("Age_f"))
+one_fit
+
+#tibble for visualizing supp fig1
+FigS1_mean <- favstats(Ki67..cells ~ Age_f, data = Fig1DEF) %>% 
+  mutate(Age_f = factor(Age_f, levels = c("17", "28", "60", "120", "180"))) %>% 
+  mutate(se = sd/sqrt(n))
+
+sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
+  geom_line(color = "#1aa700", size = 1) +
+  geom_point(color = "#1aa700", size = 8) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .1, size = 1, color=c("#1aa700")) + 
+  labs(x = "Age (days)", y = "Ki67+ cells") +
+  theme_classic() +
+  scale_y_continuous(breaks = c(0, 0.5, 1))
+
+#Filtering for only ages 17 and 60
+Fig1DEF_working <- Fig1DEF %>% 
+  filter(Age_f %in% c("17", "60"))
+
+t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+
+#tibble with mean and standard error Fig1D
+Fig1D_mean <- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %>% 
+  mutate(se = sd/sqrt(n))
+
+#plotting the above
+p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_bar(stat= "identity", width = 0.5) +
+  labs(x = "", y= "Ki67+ Cells") + #no x label 
+  coord_cartesian(ylim = c(0, 1.4)) +
+  scale_y_continuous(breaks = c(0, 0.7, 1.4), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
+  theme_classic() + #no grid and dark axis lines
+  theme(axis.text.x = element_blank(), #hides text and ticks
+        axis.ticks.x = element_blank(),
+        legend.title = element_blank()) +
+  geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
+              annotation = "*") +
+  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+
+#removing NA
+Fig1DEF_working <- Fig1DEF_working[-5,] %>% 
+  mutate(DCX..cells = as.numeric(DCX..cells),
+         DCX..LMTs = as.numeric(DCX..LMTs))
+
+
+#tibble with mean and standard error Fig1E
+Fig1E_mean <- favstats(DCX..cells ~ Age, data = Fig1DEF_working) %>% 
+  mutate(se = sd/sqrt(n))
+
+#t test for DCX cells
+t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+
+#plotting the above
+p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_bar(stat= "identity", width = 0.5) +
+  labs(x = "", y= "DCX+ Cells") + #no x label 
+  coord_cartesian(ylim = c(0, 3.6)) +
+  scale_y_continuous(breaks = c(0, 1.8, 3.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
+  theme_classic() + #no grid and dark axis lines
+  theme(axis.text.x = element_blank(), #hides text and ticks
+        axis.ticks.x = element_blank(),
+        legend.title = element_blank()) +
+  geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
+              annotation = "*") +
+  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+
+#tibble with mean and standard error Fig1F
+Fig1F_mean <- favstats(DCX..LMTs ~ Age, data = Fig1DEF_working) %>% 
+  mutate(se = sd/sqrt(n))
+
+#t test for LMTs 
+t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+
+#plotting the above
+p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_bar(stat= "identity", width = 0.5) +
+  labs(x = "", y= "DCX+ LMTs") + #no x label 
+  coord_cartesian(ylim = c(0, 16)) +
+  scale_y_continuous(breaks = c(0, 8, 16), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
+  theme_classic() + #no grid and dark axis lines
+  theme(axis.text.x = element_blank(), #hides text and ticks
+        axis.ticks.x = element_blank(),
+        legend.title = element_blank()) +
+  geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
+              annotation = "*") +
+  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+
+
+#visualization 
+grid.arrange(grid.arrange(p1, p2, p3, p4, nrow = 1), sp1, nrow =2)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
