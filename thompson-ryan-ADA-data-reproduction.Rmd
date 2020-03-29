@@ -27,6 +27,8 @@ library(afex)
 
 ###### Importing Fig1C
 
+###### Importing Fig1C
+
 Fig1C <- read.csv("forgetting-data/Fig1C.csv")
 names(Fig1C)
 
@@ -39,15 +41,16 @@ Fig1C_mean <- favstats(GFP..cells ~ Age, data = Fig1C) %>%
 
 #plot for above data
 p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
-  geom_bar(stat= "identity", width = 0.5) +
-  labs(x = "", y= "GFP+ Cells") + #no x label 
-  coord_cartesian(ylim = c(0, 1.6)) +
-  scale_y_continuous(breaks = c(0, 0.8, 1.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
         axis.ticks.x = element_blank(),
-        legend.title = element_blank()) +
+        legend.title = element_blank(),
+        legend.position = c(0.25,0.9)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_bar(stat= "identity") +
+  labs(x = "", y= "GFP+ Cells") + #no x label 
+  coord_cartesian(ylim = c(0, 1.6)) +
+  scale_y_continuous(breaks = c(0, 0.8, 1.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
@@ -71,7 +74,7 @@ FigS1_mean <- favstats(Ki67..cells ~ Age_f, data = Fig1DEF) %>%
 
 sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
   geom_line(color = "#1aa700", size = 1) +
-  geom_point(color = "#1aa700", size = 8) +
+  geom_point(color = "#1aa700", size = 4) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .1, size = 1, color=c("#1aa700")) + 
   labs(x = "Age (days)", y = "Ki67+ cells") +
   theme_classic() +
@@ -90,14 +93,14 @@ Fig1D_mean <- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %>%
 #plotting the above
 p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
-  geom_bar(stat= "identity", width = 0.5) +
+  geom_bar(stat= "identity") +
   labs(x = "", y= "Ki67+ Cells") + #no x label 
   coord_cartesian(ylim = c(0, 1.4)) +
   scale_y_continuous(breaks = c(0, 0.7, 1.4), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
         axis.ticks.x = element_blank(),
-        legend.title = element_blank()) +
+        legend.position = "none") + #removes legend
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
@@ -118,14 +121,14 @@ t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 #plotting the above
 p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
-  geom_bar(stat= "identity", width = 0.5) +
+  geom_bar(stat= "identity") +
   labs(x = "", y= "DCX+ Cells") + #no x label 
   coord_cartesian(ylim = c(0, 3.6)) +
   scale_y_continuous(breaks = c(0, 1.8, 3.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
         axis.ticks.x = element_blank(),
-        legend.title = element_blank()) +
+        legend.position = "none") + #removes legend
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
@@ -140,22 +143,106 @@ t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 #plotting the above
 p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
-  geom_bar(stat= "identity", width = 0.5) +
+  geom_bar(stat= "identity") +
   labs(x = "", y= "DCX+ LMTs") + #no x label 
   coord_cartesian(ylim = c(0, 16)) +
   scale_y_continuous(breaks = c(0, 8, 16), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
         axis.ticks.x = element_blank(),
-        legend.title = element_blank()) +
+        legend.position = "none") + #removes legend
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+###### Importing Fig1H_and_FigS3b
 
+Fig1H_and_FigS3b <- read.csv("forgetting-data/Fig1H_ and_FigS3b.csv", stringsAsFactors = FALSE)
+names(Fig1H_and_FigS3b)
 
+Fig1H_mean <- Fig1H_and_FigS3b %>% 
+  group_by(Age, Day) %>% 
+  summarize(mean = mean(Test.Freezing),
+            sd = sd(Test.Freezing),
+            se = sd/sqrt(n())) %>% 
+  mutate(Day_f = factor(Day, levels = c("1", "7", "14", "28")))
+
+#plotting Fig1H
+
+p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
+  geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0"))+
+  geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.1, 
+                color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+  labs(x = "Day", y= "Freezing (%)") +
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
+  theme_classic() + #no grid and dark axis lines
+  geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", tip_length = 0, size = 0)
+
+#Manipulating for figure S3b
+names(Fig1H_and_FigS3b)
+FigS3b <- pivot_longer(data = Fig1H_and_FigS3b, cols = c("Train.Min..1.Freezing", "Train.Min..1.Freezing.1", 
+                                                         "Train.Min..1.Freezing.2", "Train.Min..1.Freezing.3",
+                                                         "Train.Min..1.Freezing.4"), 
+                       names_to = "minute", values_to = "freezing")
+
+FigS3b_mean <- FigS3b %>% 
+  group_by(Age, minute) %>% 
+  summarize(mean = mean(freezing), 
+             sd = sd(freezing),
+             se = sd/sqrt(n()))
+
+#Plotting FS3b
+
+sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
+  geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
+                         "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+  geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
+                      "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1,
+                color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
+                          "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+  labs(x = "Minute", y= "Freezing (%)") +
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
+  theme_classic() + #no grid and dark axis lines
+  scale_x_discrete(labels = c("1", "2", "3", "4", "5"))
+
+###### Importing Fig1I
+
+Fig1I <- read.csv("forgetting-data/Fig1I.csv", stringsAsFactors = FALSE)
+names(Fig1I)
+
+#Manipulating data to do ANOVA
+Fig1I <- pivot_longer(data = Fig1I, cols= ends_with(".shock"),
+                      names_to= "condition", values_to = "Distance.traveled") %>% 
+  mutate(Age_f = factor(Age, levels = c("17", "60")),
+         condition_f = factor(condition, levels = c("Before.shock", "During.shock")),
+         id = c(1:34))
+#The test
+two_fit <- aov_ez("id", "Distance.traveled", data = Fig1I,
+                  betwee = c("Age_f", "condition_f"))
+two_fit
+
+#Manipulating data for visualization
+Fig1I_mean <- Fig1I %>% 
+  group_by(Age, condition) %>% 
+  summarize(mean = mean(Distance.traveled),
+            sd = sd(Distance.traveled),
+            se = sd/sqrt(n()))
+#plotting
+p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
+  geom_point(size = 4, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
+  geom_line(color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
+  labs(x = "Shock Reactivity", y= "Distance Traveled") +
+  coord_cartesian(ylim = c(0, 12)) +
+  scale_y_continuous(breaks = c(0, 6, 12), expand = c(0,0)) +
+  theme_classic() + #no grid and dark axis lines
+  scale_x_discrete(labels = c("Before", "After"))
+    
 #visualization 
-grid.arrange(grid.arrange(p1, p2, p3, p4, nrow = 1), sp1, nrow =2)
-
+grid.arrange(grid.arrange(p1, p2, p3, p4, nrow = 1), grid.arrange(sp1, sp2, p5, p6, nrow= 1), nrow =2)
 ```
 
 ## Including Plots
