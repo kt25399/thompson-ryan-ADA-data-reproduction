@@ -242,7 +242,7 @@ p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   scale_x_discrete(labels = c("Before", "After"))
     
 #visualization 
-grid.arrange(grid.arrange(p1, p2, p3, p4, nrow = 1), grid.arrange(sp1, sp2, p5, p6, nrow= 1), nrow =2)
+grid.arrange(p1, p2, p3, p4, sp1, sp2, p5, p6, nrow =2)
 ```
 
 ## Including Plots
