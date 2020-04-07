@@ -7,14 +7,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r libraries, include = FALSE}
-
 library(tidyverse)
 library(mosaic)
 library(ggsignif)
@@ -24,9 +21,6 @@ library(afex)
 ```
 
 ```{r fig 1}
-
-###### Importing Fig1C
-
 ###### Importing Fig1C
 
 Fig1C <- read.csv("forgetting-data/Fig1C.csv")
@@ -48,7 +42,7 @@ p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
         legend.position = c(0.25,0.9)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
-  labs(x = "", y= "GFP+ Cells") + #no x label 
+  labs(x = "", y= "GFP+ Cells", tag = "C") + #no x label 
   coord_cartesian(ylim = c(0, 1.6)) +
   scale_y_continuous(breaks = c(0, 0.8, 1.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
@@ -94,7 +88,7 @@ Fig1D_mean <- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %>%
 p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
-  labs(x = "", y= "Ki67+ Cells") + #no x label 
+  labs(x = "", y= "Ki67+ Cells", tag = "D") + #no x label 
   coord_cartesian(ylim = c(0, 1.4)) +
   scale_y_continuous(breaks = c(0, 0.7, 1.4), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
@@ -122,7 +116,7 @@ t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
-  labs(x = "", y= "DCX+ Cells") + #no x label 
+  labs(x = "", y= "DCX+ Cells", tag = "E") + #no x label 
   coord_cartesian(ylim = c(0, 3.6)) +
   scale_y_continuous(breaks = c(0, 1.8, 3.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
@@ -144,7 +138,7 @@ t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
-  labs(x = "", y= "DCX+ LMTs") + #no x label 
+  labs(x = "", y= "DCX+ LMTs", tag = "F") + #no x label 
   coord_cartesian(ylim = c(0, 16)) +
   scale_y_continuous(breaks = c(0, 8, 16), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   theme_classic() + #no grid and dark axis lines
@@ -173,7 +167,7 @@ p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.1, 
                 color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
-  labs(x = "Day", y= "Freezing (%)") +
+  labs(x = "Day", y= "Freezing (%)", tag = "H") +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
@@ -235,14 +229,18 @@ p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
   geom_line(color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
-  labs(x = "Shock Reactivity", y= "Distance Traveled") +
+  labs(x = "Shock Reactivity", y= "Distance Traveled", tag = "I") +
   coord_cartesian(ylim = c(0, 12)) +
   scale_y_continuous(breaks = c(0, 6, 12), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
   scale_x_discrete(labels = c("Before", "After"))
     
 #visualization 
-grid.arrange(p1, p2, p3, p4, sp1, sp2, p5, p6, nrow =2)
+lay <- rbind(c(1,2,3,4),
+             c(NA,6,7,NA))
+grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)
+knitr::include_graphics("F1.large.jpg")
+sp1
+sp2
+
 ```
-
-
