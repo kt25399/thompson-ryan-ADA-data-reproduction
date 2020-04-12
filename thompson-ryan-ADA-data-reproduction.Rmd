@@ -9,7 +9,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
+The subgranular zone (SGZ), located below the granule layer of the dentate gyrus (DG) region of the hippocampus, is one site of the brain that continues to birth new neurons throughout life, a process termed adult neurogenesis. Though neurogenesis being high, newborn cells birth rates rapidly decline into adulthood. Facilitating adult neurogenesis promotes formation of new memories in the hippocampus. However, computational models predict that new cells added to the DG would also facilitate forgetting of established memories. The latter had not been shown in vivo models, and this study was intended to explore this possibility.  
 
+In this report I reproduced the statistical analyses and visualization of figure 1 (fig1c, fig1d, fig1e, fig1f, fig1h, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry  methodologies. Fig1c compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1d compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1d compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1f compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1c-f using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1h compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1i then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3b shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.
 
 ```{r libraries, include = FALSE}
 library(tidyverse)
@@ -20,7 +22,9 @@ library(afex)
 
 ```
 
-```{r fig 1}
+## Data analysis replication
+### Fig1C
+```{r fig 1c}
 ###### Importing Fig1C
 
 Fig1C <- read.csv("forgetting-data/Fig1C.csv")
@@ -48,8 +52,10 @@ p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+```
 
-
+### Fig1d
+```{r fig 1d}
 ###### Importing Fig1DEF
 
 Fig1DEF <- read.csv("forgetting-data/Fig1DEF_ and_FigS1.csv", stringsAsFactors = FALSE)
