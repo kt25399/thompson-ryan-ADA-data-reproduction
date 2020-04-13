@@ -368,8 +368,8 @@ summary {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>The subgranular zone (SGZ), located below the granule layer of the dentate gyrus (DG) region of the hippocampus, is one site of the brain that continues to birth new neurons throughout life, a process termed adult neurogenesis. Though neurogenesis being high, newborn cells birth rates rapidly decline into adulthood. Facilitating adult neurogenesis promotes formation of new memories in the hippocampus. However, computational models predict that new cells added to the DG would also facilitate forgetting of established memories. The latter had not been shown in vivo models, and this study was intended to explore this possibility.</p>
-<p>In this report I reproduced the statistical analyses and visualization of figure 1 (fig1C, fig1D, fig1E, fig1F, fig1H, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry methodologies. Fig1C compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1D compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1E compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1F compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1C-F using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1H compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1I then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3B shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.</p>
+<p>The subgranular zone (SGZ), located below the granule layer of the dentate gyrus (DG) region of the hippocampus, is one site of the brain that continues to birth new neurons throughout life, a process termed adult neurogenesis. Though neurogenesis begins high, newborn cells birth rates rapidly decline into adulthood. Facilitating adult neurogenesis promotes formation of new memories in the hippocampus. However, computational models predict that new cells added to the DG would also facilitate forgetting of established memories. The latter had not been shown in vivo models, and this study was intended to explore this possibility. The authors found that, as hypothesized, increased neurogenesis after a learning task was sufficient to induce forgetting.</p>
+<p>In this report I reproduced the statistical analyses and visualization of figure 1 (fig1C, fig1D, fig1E, fig1F, fig1H, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry methodologies. Fig1C compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1D compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1E compared the number of immature neurons using the immature neuron marker doublecortin (DCX). Fig1F compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1C-F using the two sample t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1H compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1I then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3B shows increases in % freezing for PD16 and PD60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.</p>
 </div>
 <div id="data-analysis-replication" class="section level2">
 <h2>Data analysis replication</h2>
@@ -387,7 +387,7 @@ head(Fig1C)</code></pre>
 ## 4  17       0.89
 ## 5  60       0.07
 ## 6  60       0.03</code></pre>
-<p>Analysis of Fig1C using student’s t-test. T value is different from that reported in text (t6 = 8.57, P &lt; 0.001)</p>
+<p>Analysis of Fig1C using two sample t-test. T value is different from that reported in text (t6 = 8.57, P &lt; 0.001).</p>
 <pre class="r"><code># t-test between 17 and 60 GFP+ cells !!!t value different
 t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)</code></pre>
 <pre><code>## 
@@ -453,7 +453,7 @@ head(Fig1DEF)</code></pre>
 ## 4  17        0.63       1.99      8.93    17  4
 ## 5  17        0.90          n         n    17  5
 ## 6  28        0.24          n         n    28  6</code></pre>
-<p>Performing the ANOVA for FigS1</p>
+<p>Performing the ANOVA for FigS1.</p>
 <pre class="r"><code># ANOVA
 one_fit &lt;- aov_ez(&quot;id&quot;, &quot;Ki67..cells&quot;, data = Fig1DEF, between = c(&quot;Age_f&quot;))</code></pre>
 <pre><code>## Contrasts set to contr.sum for the following variables: Age_f</code></pre>
@@ -477,7 +477,7 @@ head(FigS1_mean)</code></pre>
 ## 3    60 0.08 0.1550  0.185 0.210 0.27 0.1800 0.07788881 4       0 0.038944405
 ## 4   120 0.08 0.0875  0.105 0.125 0.14 0.1075 0.02753785 4       0 0.013768926
 ## 5   180 0.04 0.0625  0.075 0.080 0.08 0.0675 0.01892969 4       0 0.009464847</code></pre>
-<p>Creating plot for FigS1</p>
+<p>Creating plot for FigS1.</p>
 <pre class="r"><code># Plotting FigS1
 sp1 &lt;- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
   geom_line(color = &quot;#1aa700&quot;, size = 1) +
@@ -501,7 +501,7 @@ head(Fig1DEF_working)</code></pre>
 ## 4  17        0.63       1.99      8.93    17  4
 ## 5  17        0.90          n         n    17  5
 ## 6  60        0.19       0.38      2.45    60 11</code></pre>
-<p>Analysis of Fig1D using student’s t-test.</p>
+<p>Analysis of Fig1D using two sample t-test.</p>
 <pre class="r"><code># t-test for Fig1D
 t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
@@ -554,7 +554,7 @@ head(Fig1DEF_working)</code></pre>
 ## 4  17        0.63       1.99      8.93    17  4
 ## 5  60        0.19       0.38      2.45    60 11
 ## 6  60        0.18       0.31      3.11    60 12</code></pre>
-<p>Analysis of Fig1E using student’s t-test.</p>
+<p>Analysis of Fig1E using two sample t-test.</p>
 <pre class="r"><code># t-test for DCX cells
 t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
@@ -576,7 +576,7 @@ head(Fig1E_mean)</code></pre>
 <pre><code>##   Age  min     Q1 median     Q3  max   mean         sd n missing         se
 ## 1  17 1.99 2.0350  2.065 2.1475 2.35 2.1175 0.15945219 4       0 0.07972609
 ## 2  60 0.31 0.3625  0.435 0.4900 0.49 0.4175 0.08845903 4       0 0.04422952</code></pre>
-<p>Creating plot for Fig1E</p>
+<p>Creating plot for Fig1E.</p>
 <pre class="r"><code># Plotting Fig1E
 p3 &lt;- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c(&quot;#1aa700&quot;, &quot;#2294d0&quot;)) + #error bar   before mean bar hides lower
@@ -594,7 +594,7 @@ p3 &lt;- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
 </div>
 <div id="fig1f" class="section level3">
 <h3>Fig1F</h3>
-<p>Analysis of Fig1F using student’s t-test.</p>
+<p>Analysis of Fig1F using two sample t-test.</p>
 <pre class="r"><code># t-test for LMTs 
 t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
@@ -608,7 +608,7 @@ t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 ## sample estimates:
 ## mean in group 17 mean in group 60 
 ##           9.8500           2.9575</code></pre>
-<p>Preparing data to be plotted by calculating</p>
+<p>Preparing data to be plotted by calculating mean and standard error.</p>
 <pre class="r"><code># Tibble with mean and standard error Fig1F
 Fig1F_mean &lt;- favstats(DCX..LMTs ~ Age, data = Fig1DEF_working) %&gt;% 
   mutate(se = sd/sqrt(n))
@@ -616,7 +616,7 @@ head(Fig1F_mean)</code></pre>
 <pre><code>##   Age  min     Q1 median     Q3   max   mean        sd n missing        se
 ## 1  17 8.93 9.2750  9.825 10.400 10.82 9.8500 0.8499020 4       0 0.4249510
 ## 2  60 2.45 2.9075  3.085  3.135  3.21 2.9575 0.3440325 4       0 0.1720162</code></pre>
-<p>Creating plot for Fig1F</p>
+<p>Creating plot for Fig1F.</p>
 <pre class="r"><code># Plotting fig1F
 p4 &lt;- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c(&quot;#1aa700&quot;, &quot;#2294d0&quot;)) + #error bar   before mean bar hides lower
@@ -705,7 +705,7 @@ p5 &lt;- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
 <div id="figs3b" class="section level3">
 <h3>FigS3b</h3>
 <p>No analyses were done for the data in FigS3B.</p>
-<p>Preparing data to be visualized for FigS3B by pivoting each train.man column under the minute column and values in the freezing column.</p>
+<p>Preparing data to be visualized for FigS3B by pivoting each train.min column under the minute column and values in the freezing column.</p>
 <pre class="r"><code># Manipulating for figure S3b
 FigS3b &lt;- pivot_longer(data = Fig1H_and_FigS3b, cols = c(&quot;Train.Min..1.Freezing&quot;, &quot;Train.Min..1.Freezing.1&quot;, 
                                                          &quot;Train.Min..1.Freezing.2&quot;, &quot;Train.Min..1.Freezing.3&quot;,
@@ -769,7 +769,7 @@ head(Fig1I)</code></pre>
 ## 4  17         0.40         8.29
 ## 5  17         1.12         9.08
 ## 6  17         0.61         9.29</code></pre>
-<p>preparing data for ANOVA by pivotting shock columns to condition column and value to distance.traveled. Also factoring age and condition in addition to adding and id column</p>
+<p>preparing data for ANOVA by pivotting shock columns to condition column and value to distance.traveled. Also factoring age and condition in addition to adding id column.</p>
 <pre class="r"><code># Manipulating data to do ANOVA
 Fig1I &lt;- pivot_longer(data = Fig1I, cols= ends_with(&quot;.shock&quot;),
                       names_to= &quot;condition&quot;, values_to = &quot;Distance.traveled&quot;) %&gt;% 
@@ -854,6 +854,11 @@ grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)</code></pre>
 </div>
 <div id="discussion-and-reflection" class="section level2">
 <h2>Discussion and Reflection</h2>
+<p>Overall, the data replication for Figures 1, S1 and S3B were successful. Fig1C-F used a two sample t-test to compare PD17 and PD60 mice. Fig1C compared GFP+ cells, I found t6= 8.51, P&lt;0.001 while the author’s reported t6=8.57, P&lt;0.001. Considering the degrees of freedom matched and two sample t-test was done for all other data reported in fig1C-F, I believe this was a data entry mistake in their report. Every other data analyzed match that reported in the originally.</p>
+<p>Fig1D found Ki67+ cells higher in PD17 compared to PD60 (t7=4.53, P&lt; 0.01). Fig1E found DCX+ cells higher in PD17 compared to PD60 (t6=18.65, P&lt;0.001). Fig1F found DCX+ LMTs higher in PD17 compared to PD60 (t6=15.03, P&lt;0.001). FigS1 extended Fig1D finding by comparing Ki67+ cells in PD17, PD28, PD60, PD120, and PD180 mice using a one way ANOVA. A main effect was found for age (F4,17= 23.62, P&lt;0.001).</p>
+<p>Fig1H compared % freezing, as a measure of forgetting, in contextual fear conditioning after different intervals PD17 and PD60 mice using a two-way ANOVA. A main effect was found for age x day (F3,62= 13.07, P&lt; 0.001). I compared distance traveled in PD17 and PD60 mice before and during shock as a measure of reactivity to the shock stimulus. No difference was found in reactivity between the two age groups (F1,30= 0.25, P=0.62).</p>
+<p>The format of the data used was already in an easily readable format (.csv) and was organized well. There was no missing data and original data analyses were communicated well in the original publication. Some file and column names were titled oddly (ex. Train.Min..1.Freezing.3), but using names() and copy/pasting directly alleviated this.</p>
+<p>Formatting the visualization of the data to match that of the original publication was the most demanding task, especially when using grid.arrange() since that applies additional formatting to a plot compared to how it would look rendered alone. This took some time making changes and reknitting the document to make it aesthetically pleasing.</p>
 </div>
 
 
