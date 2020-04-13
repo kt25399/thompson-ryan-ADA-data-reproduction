@@ -244,6 +244,7 @@ Analysis of Fig1H using a 2 way ANOVA.
 # ANOVA
 two_fit <- aov_ez("id", "Test.Freezing", data = Fig1H_and_FigS3b,
                   between = c("Age", "Day"))
+two_fit
 ```
 Preparing data to be plotted by caluating mean and standard error. Day was mutated to a factor so that the x-axis ticks were evenly spaced.
 
@@ -304,7 +305,8 @@ sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
                          "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
   geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
-                      "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+                      "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0"),
+            size = 1) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1,
                 color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
                           "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
@@ -374,19 +376,21 @@ Recreating Figure 1. Cropped image from paper below.
 lay <- rbind(c(1,2,3,4),
              c(NA,6,7,NA))
 grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)
-knitr::include_graphics("F1.large.cropped.jpg")
+knitr::include_graphics("images/F1.large.cropped.jpg")
 ```
+
 Recreating FigS1. Cropped image from paper below.
 
 ```{r FigS1 visualization}
 sp1
-#knitr::include_graphics()
+knitr::include_graphics("images/FS1.jpg")
 ```
+
 Recreating FigS3B. Cropped image from paper below.
 
 ```{r FigS3b visualization}
 sp2
-#knitr::include_graphics()
+knitr::include_graphics("images/FS3B.jpg")
 ```
 
 ## Discussion and Reflection
