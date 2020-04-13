@@ -242,6 +242,7 @@ Analysis of Fig1H using a 2 way ANOVA.
 
 ```{r fig1H ANOVA}
 # ANOVA
+# Post hoc t-tests here
 two_fit <- aov_ez("id", "Test.Freezing", data = Fig1H_and_FigS3b,
                   between = c("Age", "Day"))
 two_fit
@@ -262,6 +263,7 @@ Creating plot for Fig1H.
 
 ```{r fig1H plot}
 # Plotting Fig1H
+# How do I add a legend?
 p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0"))+
   geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
@@ -301,6 +303,8 @@ Creating plot for Fig3SB.
 
 ```{r figS3b plot}
 # Plotting FS3b
+# How do I add a legend?
+
 sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
                          "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
