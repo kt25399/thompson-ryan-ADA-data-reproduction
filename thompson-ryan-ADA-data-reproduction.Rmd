@@ -24,26 +24,38 @@ library(afex)
 
 ## Data analysis replication
 ### Fig1C
-```{r Fig1C}
+Importing file for Fig1c.
+```{r Fig1C import}
 ###### Importing Fig1C
 
 Fig1C <- read.csv("forgetting-data/Fig1C.csv")
 head(Fig1C)
+```
+Analysis of Fig1C using student's t-test. T value is different from that reported in text (t6 = 8.57, P <
+0.001) 
 
+```{r Fig1C t-test}
 # t-test between 17 and 60 GFP+ cells !!!t value different
 t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)
+```
+Preparing data to be plotted by calculating mean and standard error.
 
+```{r Fig1C manipulation}
 # Tibble with mean and standard error Fig1C
 Fig1C_mean <- favstats(GFP..cells ~ Age, data = Fig1C) %>% 
   mutate(se = sd/sqrt(n))
+head(Fig1C_mean)
+```
+Creating plot for Fig1C.
 
+```{r Fig1C plot}
 # Plot for above data
 p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
         axis.ticks.x = element_blank(),
         legend.title = element_blank(),
-        legend.position = c(0.25,0.9)) +
+        legend.position = c(0.35, 1)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
   labs(x = "", y= "GFP+ Cells", tag = "C") + #no x label 
@@ -51,31 +63,47 @@ p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   scale_y_continuous(breaks = c(0, 0.8, 1.6), expand = c(0,0)) + #breaks to match fig, expand puts bars directly on axis
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
-  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+  scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0"), labels = c("P17", "P60")) #bar colors
 ```
 
 ### FigS1
-```{r FigS1}
+Importing file for Fig1DEF and FigS1.
+
+```{r FigDEF and FigS1 import}
 ###### Importing Fig1DEF
 
 Fig1DEF <- read.csv("forgetting-data/Fig1DEF_ and_FigS1.csv", stringsAsFactors = FALSE)
 head(Fig1DEF)
+```
+Factoring age and adding id column to perform ANOVA.
 
+```{r FigS1 ANOVA manipulation}
 # Manipulating data for ANOVA
 Fig1DEF <- Fig1DEF %>% 
   mutate(Age_f = factor(Age, levels = c("17", "28", "60", "120", "180"))) %>% 
   mutate(id = rownames(Fig1DEF))
+head(Fig1DEF)
+```
+Performing the ANOVA for FigS1
 
+```{r FigS1 ANOVA}
 # ANOVA
 one_fit <- aov_ez("id", "Ki67..cells", data = Fig1DEF, between = c("Age_f"))
 one_fit
+```
+Preparing data to be plotted by calculating mean and standard error.
 
+```{r FigS1 plot manipulation}
 # Tibble for visualizing FigS1
 FigS1_mean <- favstats(Ki67..cells ~ Age_f, data = Fig1DEF) %>% 
   mutate(Age_f = factor(Age_f, levels = c("17", "28", "60", "120", "180"))) %>% 
   mutate(se = sd/sqrt(n))
+head(FigS1_mean)
+```
+Creating plot for FigS1
 
-# Plooting FigS1
+```{r FigS1 plot}
+# Plotting FigS1
 sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
   geom_line(color = "#1aa700", size = 1) +
   geom_point(color = "#1aa700", size = 4) +
@@ -86,21 +114,34 @@ sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) +
 ```
 
 ### Fig1D
-```{r Fig1D}
+Filtering Fig1DEF to only have P17 and P60.
+
+```{r Fig1D manipulation t-test}
 # Filtering for only ages 17 and 60
 Fig1DEF_working <- Fig1DEF %>% 
   filter(Age_f %in% c("17", "60"))
+head(Fig1DEF_working)
+```
+Analysis of Fig1D using student's t-test.
 
+```{r Fig1D t-test}
 # t-test for Fig1D
 t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+```
+Preparing data to be plotted by calculating mean and standard error.
 
+```{r Fig1D manipulation plot}
 # Tibble with mean and standard error Fig1D
 Fig1D_mean <- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
+head(Fig1D_mean)
+```
+Creating plot for Fig1D.
 
+```{r Fig1D plot}
 # Plotting Fig1D
 p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar   before mean bar hides lower
   geom_bar(stat= "identity") +
   labs(x = "", y= "Ki67+ Cells", tag = "D") + #no x label 
   coord_cartesian(ylim = c(0, 1.4)) +
@@ -113,25 +154,36 @@ p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
 ```
-
 ### Fig1E
-```{r Fig1E}
+Removing missing values to make analyses and plotting easier for Fig1E and F.
+
+```{r Fig1E NA removal}
 # Removing NA
 Fig1DEF_working <- Fig1DEF_working[-5,] %>% 
   mutate(DCX..cells = as.numeric(DCX..cells),
          DCX..LMTs = as.numeric(DCX..LMTs))
+head(Fig1DEF_working)
+```
+Analysis of Fig1E using student's t-test.
 
-
+```{r Fig1E t-test}
+# t-test for DCX cells
+t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+```
+Preparing data to be plotted by calculating mean and standard error.
+ 
+```{r Fig1E manipulation}
 # Tibble with mean and standard error Fig1E
 Fig1E_mean <- favstats(DCX..cells ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
+head(Fig1E_mean)
+```
+Creating plot for Fig1E
 
-# t-test for DCX cells
-t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
-
+```{r Fig1E plot}
 # Plotting Fig1E
 p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar   before mean bar hides lower
   geom_bar(stat= "identity") +
   labs(x = "", y= "DCX+ Cells", tag = "E") + #no x label 
   coord_cartesian(ylim = c(0, 3.6)) +
@@ -144,19 +196,27 @@ p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
 ```
-
 ### Fig1F
-``` {r fig 1f}
+Analysis of Fig1F using student's t-test.
+
+``` {r fig 1f t-test}
+# t-test for LMTs 
+t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
+```
+Preparing data to be plotted by calculating 
+
+```{r Fig1F manipulation}
 # Tibble with mean and standard error Fig1F
 Fig1F_mean <- favstats(DCX..LMTs ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
+head(Fig1F_mean)
+```
+Creating plot for Fig1F
 
-# t-test for LMTs 
-t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
-
+```{r fig1F plot}
 # Plotting fig1F
 p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar   before mean bar hides lower
   geom_bar(stat= "identity") +
   labs(x = "", y= "DCX+ LMTs", tag = "F") + #no x label 
   coord_cartesian(ylim = c(0, 16)) +
@@ -169,18 +229,25 @@ p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
 ```
-
 ### Fig1H
-``` {r fig1h}
-###### Importing Fig1H_and_FigS3b
+Importing file for Fig1H and FigS3B and adding id column.
+
+``` {r fig1h and FigS3B import}
+###### Importing Fig1H_and_FigS3B
 Fig1H_and_FigS3b <- read.csv("forgetting-data/Fig1H_ and_FigS3b.csv", stringsAsFactors = FALSE) %>% 
   mutate(id = c(1:70))
 head(Fig1H_and_FigS3b)
+```
+Analysis of Fig1H using a 2 way ANOVA.
 
+```{r fig1H ANOVA}
 # ANOVA
 two_fit <- aov_ez("id", "Test.Freezing", data = Fig1H_and_FigS3b,
                   between = c("Age", "Day"))
+```
+Preparing data to be plotted by caluating mean and standard error. Day was mutated to a factor so that the x-axis ticks were evenly spaced.
 
+```{r fig1H manipulation}
 # Manipulating data for visualization
 Fig1H_mean <- Fig1H_and_FigS3b %>% 
   group_by(Age, Day) %>% 
@@ -188,7 +255,11 @@ Fig1H_mean <- Fig1H_and_FigS3b %>%
             sd = sd(Test.Freezing),
             se = sd/sqrt(n())) %>% 
   mutate(Day_f = factor(Day, levels = c("1", "7", "14", "28")))
+head(Fig1H_mean)
+```
+Creating plot for Fig1H.
 
+```{r fig1H plot}
 # Plotting Fig1H
 p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0"))+
@@ -199,24 +270,35 @@ p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
+  theme(axis.ticks.x = element_blank()) +
   geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", tip_length = 0, size = 0)
 ```
-
 ### FigS3b
-``` {r fig S3b}
+No analyses were done for the data in FigS3B.
+
+Preparing data to be visualized for FigS3B by pivoting each train.man column under the minute column and values in the freezing column.
+``` {r figS3b manipulation}
 # Manipulating for figure S3b
 FigS3b <- pivot_longer(data = Fig1H_and_FigS3b, cols = c("Train.Min..1.Freezing", "Train.Min..1.Freezing.1", 
                                                          "Train.Min..1.Freezing.2", "Train.Min..1.Freezing.3",
                                                          "Train.Min..1.Freezing.4"), 
                        names_to = "minute", values_to = "freezing")
+head(FigS3b)
+```
+Preparing data to be plotted by calulating mean and standard error.
 
+```{r figS3B manipulation plot}
 # Manipulation for visualization 
 FigS3b_mean <- FigS3b %>% 
   group_by(Age, minute) %>% 
   summarize(mean = mean(freezing), 
              sd = sd(freezing),
              se = sd/sqrt(n()))
+head(FigS3b_mean)
+```
+Creating plot for Fig3SB.
 
+```{r figS3b plot}
 # Plotting FS3b
 sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
@@ -232,53 +314,79 @@ sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   theme_classic() + #no grid and dark axis lines
   scale_x_discrete(labels = c("1", "2", "3", "4", "5"))
 ```
-
 ### Fig1I
-``` {r fig 1I}
+Importing file for Fig1I.
+
+``` {r fig1I import}
 ###### Importing Fig1I
 Fig1I <- read.csv("forgetting-data/Fig1I.csv", stringsAsFactors = FALSE)
 head(Fig1I)
+```
+preparing data for ANOVA by pivotting shock columns to condition column and value to distance.traveled. Also factoring age and condition in addition to adding and id column
 
+```{r fig1I manipulation ANOVA}
 # Manipulating data to do ANOVA
 Fig1I <- pivot_longer(data = Fig1I, cols= ends_with(".shock"),
                       names_to= "condition", values_to = "Distance.traveled") %>% 
   mutate(Age_f = factor(Age, levels = c("17", "60")),
          condition_f = factor(condition, levels = c("Before.shock", "During.shock")),
          id = c(1:34))
+head(Fig1I)
+```
+Analysis of Fig1I using 2 way ANOVA.
 
+```{r fig1I ANOVA}
 # The test
 two_fit2 <- aov_ez("id", "Distance.traveled", data = Fig1I,
                   between = c("Age_f", "condition_f"))
 two_fit2
+```
+Preparing data to be plotted by calculating mean and standard error.
 
+```{r fig1I manipulation plot}
 # Manipulating data for visualization
 Fig1I_mean <- Fig1I %>% 
   group_by(Age, condition) %>% 
   summarize(mean = mean(Distance.traveled),
             sd = sd(Distance.traveled),
             se = sd/sqrt(n()))
+head(Fig1I_mean)
+```
+Creating plot for Fig1I
+
+```{r fig1I plot}
 # Plotting Fig1I
 p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
   geom_line(color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1, 
+                color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
   labs(x = "Shock Reactivity", y= "Distance Traveled", tag = "I") +
   coord_cartesian(ylim = c(0, 12)) +
   scale_y_continuous(breaks = c(0, 6, 12), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
   scale_x_discrete(labels = c("Before", "After"))
 ```
-
 ### Plotting
-``` {r visualization}
+Recreating Figure 1. Cropped image from paper below.
+```{r Fig1 visualization}
 # Visualization 
 lay <- rbind(c(1,2,3,4),
              c(NA,6,7,NA))
 grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)
-knitr::include_graphics("F1.large.jpg")
-sp1
-sp2
+knitr::include_graphics("F1.large.cropped.jpg")
+```
+Recreating FigS1. Cropped image from paper below.
 
+```{r FigS1 visualization}
+sp1
+#knitr::include_graphics()
+```
+Recreating FigS3B. Cropped image from paper below.
+
+```{r FigS3b visualization}
+sp2
+#knitr::include_graphics()
 ```
 
 ## Discussion and Reflection
