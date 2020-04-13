@@ -369,7 +369,7 @@ summary {
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The subgranular zone (SGZ), located below the granule layer of the dentate gyrus (DG) region of the hippocampus, is one site of the brain that continues to birth new neurons throughout life, a process termed adult neurogenesis. Though neurogenesis being high, newborn cells birth rates rapidly decline into adulthood. Facilitating adult neurogenesis promotes formation of new memories in the hippocampus. However, computational models predict that new cells added to the DG would also facilitate forgetting of established memories. The latter had not been shown in vivo models, and this study was intended to explore this possibility.</p>
-<p>In this report I reproduced the statistical analyses and visualization of figure 1 (fig1c, fig1d, fig1e, fig1f, fig1h, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry methodologies. Fig1c compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1d compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1d compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1f compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1c-f using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1h compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1i then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3b shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.</p>
+<p>In this report I reproduced the statistical analyses and visualization of figure 1 (fig1C, fig1D, fig1E, fig1F, fig1H, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry methodologies. Fig1C compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1D compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1E compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1F compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1C-F using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1H compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1I then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3B shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.</p>
 </div>
 <div id="data-analysis-replication" class="section level2">
 <h2>Data analysis replication</h2>
@@ -378,9 +378,15 @@ summary {
 <pre class="r"><code>###### Importing Fig1C
 
 Fig1C &lt;- read.csv(&quot;forgetting-data/Fig1C.csv&quot;)
-names(Fig1C)</code></pre>
-<pre><code>## [1] &quot;Age&quot;        &quot;GFP..cells&quot;</code></pre>
-<pre class="r"><code>#t test between 17 and 60 GFP+ cells !!!t value different
+head(Fig1C)</code></pre>
+<pre><code>##   Age GFP..cells
+## 1  17       0.79
+## 2  17       1.23
+## 3  17       0.80
+## 4  17       0.89
+## 5  60       0.07
+## 6  60       0.03</code></pre>
+<pre class="r"><code># t-test between 17 and 60 GFP+ cells !!!t value different
 t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
@@ -393,11 +399,11 @@ t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)</code></pre>
 ## sample estimates:
 ## mean in group 17 mean in group 60 
 ##           0.9275           0.0450</code></pre>
-<pre class="r"><code>#tibble with mean and standard error Fig1C
+<pre class="r"><code># Tibble with mean and standard error Fig1C
 Fig1C_mean &lt;- favstats(GFP..cells ~ Age, data = Fig1C) %&gt;% 
   mutate(se = sd/sqrt(n))
 
-#plot for above data
+# Plot for above data
 p1 &lt;- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
@@ -413,16 +419,25 @@ p1 &lt;- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
               annotation = &quot;*&quot;) +
   scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors</code></pre>
 </div>
-<div id="fig1d" class="section level3">
-<h3>Fig1d</h3>
+<div id="figs1" class="section level3">
+<h3>FigS1</h3>
 <pre class="r"><code>###### Importing Fig1DEF
 
 Fig1DEF &lt;- read.csv(&quot;forgetting-data/Fig1DEF_ and_FigS1.csv&quot;, stringsAsFactors = FALSE)
+head(Fig1DEF)</code></pre>
+<pre><code>##   Age Ki67..cells DCX..cells DCX..LMTs
+## 1  17        0.93       2.05     10.82
+## 2  17        0.53       2.08      9.39
+## 3  17        1.25       2.35     10.26
+## 4  17        0.63       1.99      8.93
+## 5  17        0.90          n         n
+## 6  28        0.24          n         n</code></pre>
+<pre class="r"><code># Manipulating data for ANOVA
 Fig1DEF &lt;- Fig1DEF %&gt;% 
   mutate(Age_f = factor(Age, levels = c(&quot;17&quot;, &quot;28&quot;, &quot;60&quot;, &quot;120&quot;, &quot;180&quot;))) %&gt;% 
   mutate(id = rownames(Fig1DEF))
 
-#supplemental figure1 ANOVA
+# ANOVA
 one_fit &lt;- aov_ez(&quot;id&quot;, &quot;Ki67..cells&quot;, data = Fig1DEF, between = c(&quot;Age_f&quot;))</code></pre>
 <pre><code>## Contrasts set to contr.sum for the following variables: Age_f</code></pre>
 <pre class="r"><code>one_fit</code></pre>
@@ -433,23 +448,27 @@ one_fit &lt;- aov_ez(&quot;id&quot;, &quot;Ki67..cells&quot;, data = Fig1DEF, be
 ## 1  Age_f 4, 17 0.02 23.62 *** .85  &lt;.0001
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;+&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>#tibble for visualizing supp fig1
+<pre class="r"><code># Tibble for visualizing FigS1
 FigS1_mean &lt;- favstats(Ki67..cells ~ Age_f, data = Fig1DEF) %&gt;% 
   mutate(Age_f = factor(Age_f, levels = c(&quot;17&quot;, &quot;28&quot;, &quot;60&quot;, &quot;120&quot;, &quot;180&quot;))) %&gt;% 
   mutate(se = sd/sqrt(n))
 
+# Plooting FigS1
 sp1 &lt;- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
   geom_line(color = &quot;#1aa700&quot;, size = 1) +
   geom_point(color = &quot;#1aa700&quot;, size = 4) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .1, size = 1, color=c(&quot;#1aa700&quot;)) + 
   labs(x = &quot;Age (days)&quot;, y = &quot;Ki67+ cells&quot;) +
   theme_classic() +
-  scale_y_continuous(breaks = c(0, 0.5, 1))
-
-#Filtering for only ages 17 and 60
+  scale_y_continuous(breaks = c(0, 0.5, 1))</code></pre>
+</div>
+<div id="fig1d" class="section level3">
+<h3>Fig1D</h3>
+<pre class="r"><code># Filtering for only ages 17 and 60
 Fig1DEF_working &lt;- Fig1DEF %&gt;% 
   filter(Age_f %in% c(&quot;17&quot;, &quot;60&quot;))
 
+# t-test for Fig1D
 t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
@@ -462,11 +481,11 @@ t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 ## sample estimates:
 ## mean in group 17 mean in group 60 
 ##            0.848            0.180</code></pre>
-<pre class="r"><code>#tibble with mean and standard error Fig1D
+<pre class="r"><code># Tibble with mean and standard error Fig1D
 Fig1D_mean &lt;- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %&gt;% 
   mutate(se = sd/sqrt(n))
 
-#plotting the above
+# Plotting Fig1D
 p2 &lt;- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c(&quot;#1aa700&quot;, &quot;#2294d0&quot;)) + #error bar before mean bar hides lower
   geom_bar(stat= &quot;identity&quot;) +
@@ -479,19 +498,21 @@ p2 &lt;- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
         legend.position = &quot;none&quot;) + #removes legend
   geom_signif(comparisons = list(c(&quot;17&quot;, &quot;60&quot;)), #ggsignif to add significance line
               annotation = &quot;*&quot;) +
-  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors
-
-#removing NA
+  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors</code></pre>
+</div>
+<div id="fig1e" class="section level3">
+<h3>Fig1E</h3>
+<pre class="r"><code># Removing NA
 Fig1DEF_working &lt;- Fig1DEF_working[-5,] %&gt;% 
   mutate(DCX..cells = as.numeric(DCX..cells),
          DCX..LMTs = as.numeric(DCX..LMTs))
 
 
-#tibble with mean and standard error Fig1E
+# Tibble with mean and standard error Fig1E
 Fig1E_mean &lt;- favstats(DCX..cells ~ Age, data = Fig1DEF_working) %&gt;% 
   mutate(se = sd/sqrt(n))
 
-#t test for DCX cells
+# t-test for DCX cells
 t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
@@ -504,7 +525,7 @@ t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 ## sample estimates:
 ## mean in group 17 mean in group 60 
 ##           2.1175           0.4175</code></pre>
-<pre class="r"><code>#plotting the above
+<pre class="r"><code># Plotting Fig1E
 p3 &lt;- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c(&quot;#1aa700&quot;, &quot;#2294d0&quot;)) + #error bar before mean bar hides lower
   geom_bar(stat= &quot;identity&quot;) +
@@ -517,13 +538,15 @@ p3 &lt;- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
         legend.position = &quot;none&quot;) + #removes legend
   geom_signif(comparisons = list(c(&quot;17&quot;, &quot;60&quot;)), #ggsignif to add significance line
               annotation = &quot;*&quot;) +
-  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors
-
-#tibble with mean and standard error Fig1F
+  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors</code></pre>
+</div>
+<div id="fig1f" class="section level3">
+<h3>Fig1F</h3>
+<pre class="r"><code># Tibble with mean and standard error Fig1F
 Fig1F_mean &lt;- favstats(DCX..LMTs ~ Age, data = Fig1DEF_working) %&gt;% 
   mutate(se = sd/sqrt(n))
 
-#t test for LMTs 
+# t-test for LMTs 
 t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
@@ -536,7 +559,7 @@ t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)</code></pre>
 ## sample estimates:
 ## mean in group 17 mean in group 60 
 ##           9.8500           2.9575</code></pre>
-<pre class="r"><code>#plotting the above
+<pre class="r"><code># Plotting fig1F
 p4 &lt;- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c(&quot;#1aa700&quot;, &quot;#2294d0&quot;)) + #error bar before mean bar hides lower
   geom_bar(stat= &quot;identity&quot;) +
@@ -549,24 +572,42 @@ p4 &lt;- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
         legend.position = &quot;none&quot;) + #removes legend
   geom_signif(comparisons = list(c(&quot;17&quot;, &quot;60&quot;)), #ggsignif to add significance line
               annotation = &quot;*&quot;) +
-  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors
-###### Importing Fig1H_and_FigS3b
-
-Fig1H_and_FigS3b &lt;- read.csv(&quot;forgetting-data/Fig1H_ and_FigS3b.csv&quot;, stringsAsFactors = FALSE)
-names(Fig1H_and_FigS3b)</code></pre>
-<pre><code>## [1] &quot;Age&quot;                     &quot;Day&quot;                    
-## [3] &quot;Train.Min..1.Freezing&quot;   &quot;Train.Min..1.Freezing.1&quot;
-## [5] &quot;Train.Min..1.Freezing.2&quot; &quot;Train.Min..1.Freezing.3&quot;
-## [7] &quot;Train.Min..1.Freezing.4&quot; &quot;Test.Freezing&quot;</code></pre>
-<pre class="r"><code>Fig1H_mean &lt;- Fig1H_and_FigS3b %&gt;% 
+  scale_fill_manual(&quot;Age&quot;, values = c(&quot;17&quot; = &quot;#1aa700&quot;, &quot;60&quot; = &quot;#2294d0&quot;)) #bar colors</code></pre>
+</div>
+<div id="fig1h" class="section level3">
+<h3>Fig1H</h3>
+<pre class="r"><code>###### Importing Fig1H_and_FigS3b
+Fig1H_and_FigS3b &lt;- read.csv(&quot;forgetting-data/Fig1H_ and_FigS3b.csv&quot;, stringsAsFactors = FALSE) %&gt;% 
+  mutate(id = c(1:70))
+head(Fig1H_and_FigS3b)</code></pre>
+<pre><code>##   Age Day Train.Min..1.Freezing Train.Min..1.Freezing.1 Train.Min..1.Freezing.2
+## 1  17   1                 10.79                   11.62                   13.69
+## 2  17   1                 10.79                    4.98                   91.70
+## 3  17   1                  6.22                    9.13                    9.96
+## 4  17   1                  0.00                    0.00                   42.74
+## 5  17   1                  3.32                   18.26                   53.94
+## 6  17   1                  0.00                    0.00                   39.42
+##   Train.Min..1.Freezing.3 Train.Min..1.Freezing.4 Test.Freezing id
+## 1                   79.67                   84.17         69.47  1
+## 2                   83.40                   70.42         64.41  2
+## 3                   77.18                   90.83         75.41  3
+## 4                   71.78                   82.92         32.62  4
+## 5                   76.76                   66.25         25.91  5
+## 6                   51.87                   79.17         71.18  6</code></pre>
+<pre class="r"><code># ANOVA
+two_fit &lt;- aov_ez(&quot;id&quot;, &quot;Test.Freezing&quot;, data = Fig1H_and_FigS3b,
+                  between = c(&quot;Age&quot;, &quot;Day&quot;))</code></pre>
+<pre><code>## Converting to factor: Age, Day</code></pre>
+<pre><code>## Contrasts set to contr.sum for the following variables: Age, Day</code></pre>
+<pre class="r"><code># Manipulating data for visualization
+Fig1H_mean &lt;- Fig1H_and_FigS3b %&gt;% 
   group_by(Age, Day) %&gt;% 
   summarize(mean = mean(Test.Freezing),
             sd = sd(Test.Freezing),
             se = sd/sqrt(n())) %&gt;% 
   mutate(Day_f = factor(Day, levels = c(&quot;1&quot;, &quot;7&quot;, &quot;14&quot;, &quot;28&quot;)))
 
-#plotting Fig1H
-
+# Plotting Fig1H
 p5 &lt;- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   geom_point(size = 4, color = c(&quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;))+
   geom_line(color = c(&quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;)) +
@@ -576,27 +617,24 @@ p5 &lt;- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
-  geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = &quot;*&quot;, tip_length = 0, size = 0)
-
-#Manipulating for figure S3b
-names(Fig1H_and_FigS3b)</code></pre>
-<pre><code>## [1] &quot;Age&quot;                     &quot;Day&quot;                    
-## [3] &quot;Train.Min..1.Freezing&quot;   &quot;Train.Min..1.Freezing.1&quot;
-## [5] &quot;Train.Min..1.Freezing.2&quot; &quot;Train.Min..1.Freezing.3&quot;
-## [7] &quot;Train.Min..1.Freezing.4&quot; &quot;Test.Freezing&quot;</code></pre>
-<pre class="r"><code>FigS3b &lt;- pivot_longer(data = Fig1H_and_FigS3b, cols = c(&quot;Train.Min..1.Freezing&quot;, &quot;Train.Min..1.Freezing.1&quot;, 
+  geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = &quot;*&quot;, tip_length = 0, size = 0)</code></pre>
+</div>
+<div id="figs3b" class="section level3">
+<h3>FigS3b</h3>
+<pre class="r"><code># Manipulating for figure S3b
+FigS3b &lt;- pivot_longer(data = Fig1H_and_FigS3b, cols = c(&quot;Train.Min..1.Freezing&quot;, &quot;Train.Min..1.Freezing.1&quot;, 
                                                          &quot;Train.Min..1.Freezing.2&quot;, &quot;Train.Min..1.Freezing.3&quot;,
                                                          &quot;Train.Min..1.Freezing.4&quot;), 
                        names_to = &quot;minute&quot;, values_to = &quot;freezing&quot;)
 
+# Manipulation for visualization 
 FigS3b_mean &lt;- FigS3b %&gt;% 
   group_by(Age, minute) %&gt;% 
   summarize(mean = mean(freezing), 
              sd = sd(freezing),
              se = sd/sqrt(n()))
 
-#Plotting FS3b
-
+# Plotting FS3b
 sp2 &lt;- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   geom_point(size = 4, color = c(&quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, &quot;#1aa700&quot;, 
                          &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;, &quot;#2294d0&quot;)) +
@@ -609,24 +647,32 @@ sp2 &lt;- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
-  scale_x_discrete(labels = c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;))
-
-###### Importing Fig1I
-
+  scale_x_discrete(labels = c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;))</code></pre>
+</div>
+<div id="fig1i" class="section level3">
+<h3>Fig1I</h3>
+<pre class="r"><code>###### Importing Fig1I
 Fig1I &lt;- read.csv(&quot;forgetting-data/Fig1I.csv&quot;, stringsAsFactors = FALSE)
-names(Fig1I)</code></pre>
-<pre><code>## [1] &quot;Age&quot;          &quot;Before.shock&quot; &quot;During.shock&quot;</code></pre>
-<pre class="r"><code>#Manipulating data to do ANOVA
+head(Fig1I)</code></pre>
+<pre><code>##   Age Before.shock During.shock
+## 1  17         0.43         4.73
+## 2  17         0.77         6.95
+## 3  17         1.01         7.08
+## 4  17         0.40         8.29
+## 5  17         1.12         9.08
+## 6  17         0.61         9.29</code></pre>
+<pre class="r"><code># Manipulating data to do ANOVA
 Fig1I &lt;- pivot_longer(data = Fig1I, cols= ends_with(&quot;.shock&quot;),
                       names_to= &quot;condition&quot;, values_to = &quot;Distance.traveled&quot;) %&gt;% 
   mutate(Age_f = factor(Age, levels = c(&quot;17&quot;, &quot;60&quot;)),
          condition_f = factor(condition, levels = c(&quot;Before.shock&quot;, &quot;During.shock&quot;)),
          id = c(1:34))
-#The test
-two_fit &lt;- aov_ez(&quot;id&quot;, &quot;Distance.traveled&quot;, data = Fig1I,
-                  betwee = c(&quot;Age_f&quot;, &quot;condition_f&quot;))</code></pre>
+
+# The test
+two_fit2 &lt;- aov_ez(&quot;id&quot;, &quot;Distance.traveled&quot;, data = Fig1I,
+                  between = c(&quot;Age_f&quot;, &quot;condition_f&quot;))</code></pre>
 <pre><code>## Contrasts set to contr.sum for the following variables: Age_f, condition_f</code></pre>
-<pre class="r"><code>two_fit</code></pre>
+<pre class="r"><code>two_fit2</code></pre>
 <pre><code>## Anova Table (Type 3 tests)
 ## 
 ## Response: Distance.traveled
@@ -636,13 +682,13 @@ two_fit &lt;- aov_ez(&quot;id&quot;, &quot;Distance.traveled&quot;, data = Fig1I
 ## 3 Age_f:condition_f 1, 30 2.11       0.25 .008     .62
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;+&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>#Manipulating data for visualization
+<pre class="r"><code># Manipulating data for visualization
 Fig1I_mean &lt;- Fig1I %&gt;% 
   group_by(Age, condition) %&gt;% 
   summarize(mean = mean(Distance.traveled),
             sd = sd(Distance.traveled),
             se = sd/sqrt(n()))
-#plotting
+# Plotting Fig1I
 p6 &lt;- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   geom_point(size = 4, color = c(&quot;#1aa700&quot;, &quot;#1aa700&quot;,&quot;#2294d0&quot;, &quot;#2294d0&quot;)) +
   geom_line(color = c(&quot;#1aa700&quot;, &quot;#1aa700&quot;,&quot;#2294d0&quot;, &quot;#2294d0&quot;)) +
@@ -651,9 +697,11 @@ p6 &lt;- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   coord_cartesian(ylim = c(0, 12)) +
   scale_y_continuous(breaks = c(0, 6, 12), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
-  scale_x_discrete(labels = c(&quot;Before&quot;, &quot;After&quot;))
-    
-#visualization 
+  scale_x_discrete(labels = c(&quot;Before&quot;, &quot;After&quot;))</code></pre>
+</div>
+<div id="plotting" class="section level3">
+<h3>Plotting</h3>
+<pre class="r"><code># Visualization 
 lay &lt;- rbind(c(1,2,3,4),
              c(NA,6,7,NA))
 grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)</code></pre>
@@ -665,6 +713,9 @@ grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)</code></pre>
 <pre class="r"><code>sp2</code></pre>
 <p><img src="data:image/png;base64,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" width="672" /></p>
 </div>
+</div>
+<div id="discussion-and-reflection" class="section level2">
+<h2>Discussion and Reflection</h2>
 </div>
 
 

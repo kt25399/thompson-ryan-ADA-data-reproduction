@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The subgranular zone (SGZ), located below the granule layer of the dentate gyrus (DG) region of the hippocampus, is one site of the brain that continues to birth new neurons throughout life, a process termed adult neurogenesis. Though neurogenesis being high, newborn cells birth rates rapidly decline into adulthood. Facilitating adult neurogenesis promotes formation of new memories in the hippocampus. However, computational models predict that new cells added to the DG would also facilitate forgetting of established memories. The latter had not been shown in vivo models, and this study was intended to explore this possibility.  
 
-In this report I reproduced the statistical analyses and visualization of figure 1 (fig1c, fig1d, fig1e, fig1f, fig1h, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry  methodologies. Fig1c compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1d compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1d compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1f compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1c-f using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1h compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1i then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3b shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.
+In this report I reproduced the statistical analyses and visualization of figure 1 (fig1C, fig1D, fig1E, fig1F, fig1H, and fig 1I) as well as the supplementary figures S1 and S3b. Fig1 compared neurogenesis in infant (post-natal day 17; PD17) and adult (PD60) mice using viral label and immunohistochemistry  methodologies. Fig1C compared progenitor cell proliferation rates using a retrovirus to label progenitor cells and their progeny with green fluorescence protein (GFP). Fig1D compared the number of dividing cells using the endogenous proliferation marker KI-67. Fig1E compared the number of immature neurons using the immature neuron marker doublecortin (DCX).Fig1F compared the number of large mossy fiber terminals (LMTs) again using DCX. All groups were compared in fig1C-F using the student’s t-test. Mice were exposed to contextual fear learning and retested for freezing behavior 1, 7, 14, and 28 days later. Fig1H compared the percentage of time freezing (% freezing) after delay using a 2-way ANOVA. Fig1I then confirmed that % freezing was not due to differences in reactivity to the shock stimulus by comparing distance traveled before and during the shock using a two-way ANOVA. FigS1 extended findings of Fig1d by comparing KI-67+ cells in mice PD16, PD28, PD60, PD120, and PD180 using a one-way ANOVA. FigS3B shows increases in % freezing for PD16 and PD 60 mice after each shock (3 shocks given after minutes 3, 4, and 5), but no statistical comparison was done.
 
 ```{r libraries, include = FALSE}
 library(tidyverse)
@@ -24,20 +24,20 @@ library(afex)
 
 ## Data analysis replication
 ### Fig1C
-```{r fig 1c}
+```{r Fig1C}
 ###### Importing Fig1C
 
 Fig1C <- read.csv("forgetting-data/Fig1C.csv")
-names(Fig1C)
+head(Fig1C)
 
-#t test between 17 and 60 GFP+ cells !!!t value different
+# t-test between 17 and 60 GFP+ cells !!!t value different
 t_test(GFP..cells ~ Age, data = Fig1C, var.equal = TRUE)
 
-#tibble with mean and standard error Fig1C
+# Tibble with mean and standard error Fig1C
 Fig1C_mean <- favstats(GFP..cells ~ Age, data = Fig1C) %>% 
   mutate(se = sd/sqrt(n))
 
-#plot for above data
+# Plot for above data
 p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   theme_classic() + #no grid and dark axis lines
   theme(axis.text.x = element_blank(), #hides text and ticks
@@ -54,24 +54,28 @@ p1 <- ggplot(data = Fig1C_mean, aes(x = Age, y = mean, fill = Age)) +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
 ```
 
-### Fig1d
-```{r fig 1d}
+### FigS1
+```{r FigS1}
 ###### Importing Fig1DEF
 
 Fig1DEF <- read.csv("forgetting-data/Fig1DEF_ and_FigS1.csv", stringsAsFactors = FALSE)
+head(Fig1DEF)
+
+# Manipulating data for ANOVA
 Fig1DEF <- Fig1DEF %>% 
   mutate(Age_f = factor(Age, levels = c("17", "28", "60", "120", "180"))) %>% 
   mutate(id = rownames(Fig1DEF))
 
-#supplemental figure1 ANOVA
+# ANOVA
 one_fit <- aov_ez("id", "Ki67..cells", data = Fig1DEF, between = c("Age_f"))
 one_fit
 
-#tibble for visualizing supp fig1
+# Tibble for visualizing FigS1
 FigS1_mean <- favstats(Ki67..cells ~ Age_f, data = Fig1DEF) %>% 
   mutate(Age_f = factor(Age_f, levels = c("17", "28", "60", "120", "180"))) %>% 
   mutate(se = sd/sqrt(n))
 
+# Plooting FigS1
 sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) + 
   geom_line(color = "#1aa700", size = 1) +
   geom_point(color = "#1aa700", size = 4) +
@@ -79,18 +83,22 @@ sp1 <- ggplot(data = FigS1_mean, aes(x = Age_f, y = mean, group = 1)) +
   labs(x = "Age (days)", y = "Ki67+ cells") +
   theme_classic() +
   scale_y_continuous(breaks = c(0, 0.5, 1))
+```
 
-#Filtering for only ages 17 and 60
+### Fig1D
+```{r Fig1D}
+# Filtering for only ages 17 and 60
 Fig1DEF_working <- Fig1DEF %>% 
   filter(Age_f %in% c("17", "60"))
 
+# t-test for Fig1D
 t_test(Ki67..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 
-#tibble with mean and standard error Fig1D
+# Tibble with mean and standard error Fig1D
 Fig1D_mean <- favstats(Ki67..cells ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
 
-#plotting the above
+# Plotting Fig1D
 p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
@@ -104,21 +112,24 @@ p2 <- ggplot(data = Fig1D_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+```
 
-#removing NA
+### Fig1E
+```{r Fig1E}
+# Removing NA
 Fig1DEF_working <- Fig1DEF_working[-5,] %>% 
   mutate(DCX..cells = as.numeric(DCX..cells),
          DCX..LMTs = as.numeric(DCX..LMTs))
 
 
-#tibble with mean and standard error Fig1E
+# Tibble with mean and standard error Fig1E
 Fig1E_mean <- favstats(DCX..cells ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
 
-#t test for DCX cells
+# t-test for DCX cells
 t_test(DCX..cells ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 
-#plotting the above
+# Plotting Fig1E
 p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
@@ -132,15 +143,18 @@ p3 <- ggplot(data = Fig1E_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+```
 
-#tibble with mean and standard error Fig1F
+### Fig1F
+``` {r fig 1f}
+# Tibble with mean and standard error Fig1F
 Fig1F_mean <- favstats(DCX..LMTs ~ Age, data = Fig1DEF_working) %>% 
   mutate(se = sd/sqrt(n))
 
-#t test for LMTs 
+# t-test for LMTs 
 t_test(DCX..LMTs ~ Age, data = Fig1DEF_working, var.equal = TRUE)
 
-#plotting the above
+# Plotting fig1F
 p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.15, size = 1, color=c("#1aa700", "#2294d0")) + #error bar before mean bar hides lower
   geom_bar(stat= "identity") +
@@ -154,11 +168,20 @@ p4 <- ggplot(data = Fig1F_mean, aes(x = Age, y = mean, fill = Age)) +
   geom_signif(comparisons = list(c("17", "60")), #ggsignif to add significance line
               annotation = "*") +
   scale_fill_manual("Age", values = c("17" = "#1aa700", "60" = "#2294d0")) #bar colors
+```
+
+### Fig1H
+``` {r fig1h}
 ###### Importing Fig1H_and_FigS3b
+Fig1H_and_FigS3b <- read.csv("forgetting-data/Fig1H_ and_FigS3b.csv", stringsAsFactors = FALSE) %>% 
+  mutate(id = c(1:70))
+head(Fig1H_and_FigS3b)
 
-Fig1H_and_FigS3b <- read.csv("forgetting-data/Fig1H_ and_FigS3b.csv", stringsAsFactors = FALSE)
-names(Fig1H_and_FigS3b)
+# ANOVA
+two_fit <- aov_ez("id", "Test.Freezing", data = Fig1H_and_FigS3b,
+                  between = c("Age", "Day"))
 
+# Manipulating data for visualization
 Fig1H_mean <- Fig1H_and_FigS3b %>% 
   group_by(Age, Day) %>% 
   summarize(mean = mean(Test.Freezing),
@@ -166,8 +189,7 @@ Fig1H_mean <- Fig1H_and_FigS3b %>%
             se = sd/sqrt(n())) %>% 
   mutate(Day_f = factor(Day, levels = c("1", "7", "14", "28")))
 
-#plotting Fig1H
-
+# Plotting Fig1H
 p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0"))+
   geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
@@ -178,22 +200,24 @@ p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
   geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", tip_length = 0, size = 0)
+```
 
-#Manipulating for figure S3b
-names(Fig1H_and_FigS3b)
+### FigS3b
+``` {r fig S3b}
+# Manipulating for figure S3b
 FigS3b <- pivot_longer(data = Fig1H_and_FigS3b, cols = c("Train.Min..1.Freezing", "Train.Min..1.Freezing.1", 
                                                          "Train.Min..1.Freezing.2", "Train.Min..1.Freezing.3",
                                                          "Train.Min..1.Freezing.4"), 
                        names_to = "minute", values_to = "freezing")
 
+# Manipulation for visualization 
 FigS3b_mean <- FigS3b %>% 
   group_by(Age, minute) %>% 
   summarize(mean = mean(freezing), 
              sd = sd(freezing),
              se = sd/sqrt(n()))
 
-#Plotting FS3b
-
+# Plotting FS3b
 sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
                          "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
@@ -207,30 +231,33 @@ sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
   scale_x_discrete(labels = c("1", "2", "3", "4", "5"))
+```
 
+### Fig1I
+``` {r fig 1I}
 ###### Importing Fig1I
-
 Fig1I <- read.csv("forgetting-data/Fig1I.csv", stringsAsFactors = FALSE)
-names(Fig1I)
+head(Fig1I)
 
-#Manipulating data to do ANOVA
+# Manipulating data to do ANOVA
 Fig1I <- pivot_longer(data = Fig1I, cols= ends_with(".shock"),
                       names_to= "condition", values_to = "Distance.traveled") %>% 
   mutate(Age_f = factor(Age, levels = c("17", "60")),
          condition_f = factor(condition, levels = c("Before.shock", "During.shock")),
          id = c(1:34))
-#The test
-two_fit <- aov_ez("id", "Distance.traveled", data = Fig1I,
-                  betwee = c("Age_f", "condition_f"))
-two_fit
 
-#Manipulating data for visualization
+# The test
+two_fit2 <- aov_ez("id", "Distance.traveled", data = Fig1I,
+                  between = c("Age_f", "condition_f"))
+two_fit2
+
+# Manipulating data for visualization
 Fig1I_mean <- Fig1I %>% 
   group_by(Age, condition) %>% 
   summarize(mean = mean(Distance.traveled),
             sd = sd(Distance.traveled),
             se = sd/sqrt(n()))
-#plotting
+# Plotting Fig1I
 p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   geom_point(size = 4, color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
   geom_line(color = c("#1aa700", "#1aa700","#2294d0", "#2294d0")) +
@@ -240,8 +267,11 @@ p6 <- ggplot(data = Fig1I_mean, aes(x = condition, y = mean, group = Age)) +
   scale_y_continuous(breaks = c(0, 6, 12), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
   scale_x_discrete(labels = c("Before", "After"))
-    
-#visualization 
+```
+
+### Plotting
+``` {r visualization}
+# Visualization 
 lay <- rbind(c(1,2,3,4),
              c(NA,6,7,NA))
 grid.arrange(p1, p2, p3, p4, p5, p6, layout_matrix = lay)
@@ -250,3 +280,5 @@ sp1
 sp2
 
 ```
+
+## Discussion and Reflection
