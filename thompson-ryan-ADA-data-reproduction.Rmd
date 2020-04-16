@@ -269,18 +269,18 @@ Creating plot for Fig1H.
 
 ```{r fig1H plot}
 # Plotting Fig1H
-# How do I add a legend?
-p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = Age)) +
-  geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0"))+
-  geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.1, 
-                color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = factor(Age), color = factor(Age))) +
+  geom_point(size = 4) +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.1) +
   labs(x = "Day", y= "Freezing (%)", tag = "H") +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
+  scale_color_manual(values = c("#1aa700", "#2294d0"), labels = c("P17", "P60")) +
   theme_classic() + #no grid and dark axis lines
-  theme(axis.ticks.x = element_blank()) +
-  geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", tip_length = 0, size = 0)
+  theme(axis.ticks.x = element_blank(), legend.title = element_blank(), legend.position = "top") +
+  geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", color = "black", tip_length = 0, size = 0)
+p5
 ```
 ### FigS3b
 No analyses were done for the data in FigS3B.
@@ -309,21 +309,17 @@ Creating plot for Fig3SB.
 
 ```{r figS3b plot}
 # Plotting FS3b
-# How do I add a legend?
 
-sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = Age)) +
-  geom_point(size = 4, color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
-                         "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
-  geom_line(color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
-                      "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0"),
-            size = 1) +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1,
-                color = c("#1aa700", "#1aa700", "#1aa700", "#1aa700", "#1aa700", 
-                          "#2294d0", "#2294d0", "#2294d0", "#2294d0", "#2294d0")) +
+sp2 <- ggplot(data = FigS3b_mean, aes(x = minute, y = mean, group = factor(Age), color = factor(Age))) +
+  geom_point(size = 4) +
+  geom_line(size = 1) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.05, size = 1) +
   labs(x = "Minute", y= "Freezing (%)") +
   coord_cartesian(ylim = c(0, 100)) +
   scale_y_continuous(breaks = c(0, 50, 100), expand = c(0,0)) +
   theme_classic() + #no grid and dark axis lines
+  scale_color_manual(values = c("#1aa700", "#2294d0"), labels = c("P17", "P60")) +
+  theme(legend.title = element_blank(), legend.position = c(0.075, 0.95)) +
   scale_x_discrete(labels = c("1", "2", "3", "4", "5"))
 ```
 ### Fig1I
