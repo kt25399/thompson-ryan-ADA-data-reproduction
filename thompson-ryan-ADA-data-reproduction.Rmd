@@ -280,7 +280,6 @@ p5 <- ggplot(data = Fig1H_mean, aes(x = Day_f, y = mean, group = factor(Age), co
   theme_classic() + #no grid and dark axis lines
   theme(axis.ticks.x = element_blank(), legend.title = element_blank(), legend.position = "top") +
   geom_signif(y_position = c(84), xmin = c(1:4), xmax = c(1:4), annotation = "*", color = "black", tip_length = 0, size = 0)
-p5
 ```
 ### FigS3b
 No analyses were done for the data in FigS3B.
